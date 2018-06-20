@@ -30,10 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\components\UserProfile.tsx" />
     <None Remove="ClientApp\store\Home.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\UserProfile.tsx" />
     <TypeScriptCompile Include="ClientApp\store\Home.ts" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 import { fetch, addTask } from 'domain-task';
 import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { ApplicationState } from '../store';
@@ -20,7 +20,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     constructor() {
         super();
         this.state = {
-            shows: false,
+            shows: true,
             Name: "",
             Password: ""
         }
@@ -39,7 +39,10 @@ class Home extends React.Component<HomeProps, HomeState> {
     public showHideAlert() {
         axios.post<boolean>(`/api/UserLogin`,
             { Username: this.state.Name, UserPassword: this.state.Password }).then(response => {
-                this.setState({ shows: response.data })
+                this.setState({ shows: response.data });
+                if (response.data == true) {
+                    window.location.href = "/UserProfile";
+                }
             })
 
     }
@@ -52,11 +55,8 @@ class Home extends React.Component<HomeProps, HomeState> {
             <span>Password:</span>
             <input type="password" onChange={this.handleChangePassword} className="inputPassword" />
             <Button bsStyle="warning" onClick={() => this.showHideAlert()}>Salvar</Button>
-            {this.state.shows ?
-                <Alert bsStyle="success">
-                    <strong>Usuario Valido!</strong> I see through the lies of the Jedi. I do not fear the dark side as you do. I have brought peace, freedom, justice, and security to my new empire.
-                   </Alert>
-                : <Alert bsStyle="danger"> Usuario invalido!</Alert>}
+            {!this.state.shows ?
+               <Alert bsStyle="danger"> Usuario invalido!</Alert>:null}
         </div>;
     }
 }
